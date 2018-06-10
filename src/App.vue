@@ -4,11 +4,21 @@
       <div class="form-warp">
         <div class="group">
           <label class="text" for="username">username:</label>
-          <input v-validate="'required|email'" type="text" id="username" class="input user-input" placeholder="username/email">
+          <input type="text" 
+                  v-model="username"
+                  id="username" 
+                  class="input user-input" 
+                  placeholder="username/email"
+          >
         </div>
         <div class="group">
           <label class="text" for="password">password:</label>
-          <input v-validate="{ required: true, email: true, regex: /[0-9]+/}" type="paddword" id="password" class="input user-input" placeholder="password">
+          <input type="password" 
+                  v-model="password"
+                  id="password" 
+                  class="input user-input" 
+                  placeholder="password"
+          >
         </div>
         <button class="submit" @click="handleSubmit" >submit</button>
         <div class="bottom-group">
@@ -19,27 +29,62 @@
       <!-- 弹出窗 -->
       <div :class="['modal',{fade:modal_is_show}]" v-show="modal_is_show" @click="handle_hide_modal"> 
         <div class="modal-title">ERROR !  </div>
-        <div class="modal-body">{{errors.items}}</div>
+        <div class="modal-body">{{err_msg}}</div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-
 export default {
   name: "App",
   data() {
     return {
-      modal_is_show: true
+      err_msg: "",
+      modal_is_show: false,
+      username: "",
+      password: ""
     };
   },
   methods: {
     handleSubmit() {
-      this.modal_is_show = true;
+      let ret = this.vaildata();
+      if (!ret) {
+        this.modal_is_show = true;
+      } else {
+        alert('提交成功ajax')
+      }
     },
     handle_hide_modal() {
       this.modal_is_show = false;
+    },
+    vaildata() {
+      //返回false时 弹出错误信息  true
+      let allNums_reg = /^\d{5,20}$/;
+      let allEn_reg = /^[a-zA-Z]{5,20}$/;
+      if (this.username == "") {
+        this.err_msg = "username不能为空";
+        return false;
+      } else if (this.username.length < 5) {
+        this.err_msg = "username必须英文和数字组合5-20位";
+        return false;
+      } else if (allNums_reg.test(this.username)) {
+        this.err_msg = "username必须英文和数字组合5-20位";
+        return false;
+      } else if (allEn_reg.test(this.username)) {
+        this.err_msg = "username必须英文和数字组合5-20位";
+      } else if (this.password == "") {
+        this.err_msg = "password不能为空";
+        return false
+      }else if (allNums_reg.test(this.password)) {
+        this.err_msg = "password必须英文和数字组合";
+        return false
+      }else if (allEn_reg.test(this.password)) {
+        this.err_msg = "password必须英文和数字组合";
+        return false
+      }else {
+        return true
+      }
     }
   }
 };
