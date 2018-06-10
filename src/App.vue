@@ -52,7 +52,7 @@ export default {
       if (!ret) {
         this.modal_is_show = true;
       } else {
-        alert('提交成功ajax')
+        alert("提交成功ajax");
       }
     },
     handle_hide_modal() {
@@ -63,28 +63,32 @@ export default {
       let allNums_reg = /^\d{5,20}$/;
       let allEn_reg = /^[a-zA-Z]{5,20}$/;
       if (this.username == "") {
-        this.err_msg = "username不能为空";
-        return false;
+        this.username_err();
       } else if (this.username.length < 5) {
-        this.err_msg = "username必须英文和数字组合5-20位";
-        return false;
+        this.username_err();
       } else if (allNums_reg.test(this.username)) {
-        this.err_msg = "username必须英文和数字组合5-20位";
-        return false;
+        this.username_err();
       } else if (allEn_reg.test(this.username)) {
-        this.err_msg = "username必须英文和数字组合5-20位";
+        this.username_err();
       } else if (this.password == "") {
-        this.err_msg = "password不能为空";
-        return false
-      }else if (allNums_reg.test(this.password)) {
-        this.err_msg = "password必须英文和数字组合";
-        return false
-      }else if (allEn_reg.test(this.password)) {
-        this.err_msg = "password必须英文和数字组合";
-        return false
-      }else {
-        return true
+        this.password_err();
+      } else if (this.password.length < 5) {
+        this.password_err();
+      } else if (allNums_reg.test(this.password)) {
+        this.password_err();
+      } else if (allEn_reg.test(this.password)) {
+        this.password_err();
+      } else {
+        return true;
       }
+    },
+    username_err() {
+      this.err_msg = "username必须英文和数字组合5-20位";
+      return false;
+    },
+    password_err() {
+      this.err_msg = "password必须英文和数字组合";
+      return false;
     }
   }
 };
